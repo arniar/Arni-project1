@@ -18,10 +18,30 @@
       </div>
       <div class="form-section">
         <h2>Login</h2>
-        <form action="/login/loginAuth" method="post">
-          <input type="text" name="emailOrPhone" placeholder="Email or Phone Number" id="emailOrPhone" class="" required>
-          <p class="validation iValid" id="emailOrPhoneMessage"></p>
-          <input type="password" placeholder="Password" name="password" required>
+        <form id="form">
+          <% if (emailError) { %>
+            <input type="text" name="emailOrPhone" placeholder="Email or Phone Number" id="emailOrPhone" class="" value="<%= detail.emailOrPhone %>" required>
+             <p class="validation iValid" id="emailOrPhoneMessage"><%=emailError%></p>
+          <% } else { %>
+            <input type="text" name="emailOrPhone" placeholder="Email or Phone Number" id="emailOrPhone" class="" value="<%= detail.emailOrPhone %>" required>
+             <p class="validation iValid" id="emailOrPhoneMessage"></p>
+          <% } %>
+                
+                <!-- Error Message -->
+        <% if (error) { %>
+          <div class="password-wrapper">
+            <input type="password" name="password" placeholder="Password" id="password" class="iAfter" required>
+            <i class="fas fa-eye" id="togglePassword"></i>
+          </div>
+          <p class="validation iValid" id="passwordMessage"><%=error%></p>
+        <% } else { %>
+          <div class="password-wrapper">
+            <input type="password" name="password" placeholder="Password" id="password" required>
+            <i class="fas fa-eye" id="togglePassword"></i>
+          </div>
+        <% } %>
+
+
           <button type="submit">Login</button>
         </form>
         

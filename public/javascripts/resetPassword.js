@@ -72,7 +72,13 @@ function validateConfirmPassword() {
     } else if (!passwordValue.startsWith(confirmPasswordValue)) {
         setError(passwordConfirm, 'Passwords do not match');
         passwordConfirmError = true;
-    } else {
+    } 
+    else if(passwordValue.length == confirmPasswordValue.length){
+        if(passwordValue !== confirmPasswordValue){
+            setError(passwordConfirm, 'Passwords do not match');
+            passwordConfirmError = true;
+        }
+    }else {
         clearError(passwordConfirm);
         passwordConfirmError = false;
     }
@@ -99,4 +105,58 @@ togglePasswordConfirm.addEventListener('click', () => {
   togglePasswordConfirm.classList.toggle('fa-eye');
   togglePasswordConfirm.classList.toggle('fa-eye-slash');
 });
+
+// ✅ Final Validation on Form Submission
+const form = document.getElementById('form');
+
+
+form.addEventListener('submit', (e) => {
+    validatePassword();
+    validateConfirmPassword();
+
+    if (passwordError || passwordConfirmError) {
+        e.preventDefault(); // Prevent form submission if errors exist
+        alert('Please fix validation errors before submitting.');
+    } else {
+        e.preventDefault(); // Always prevent default to control form submission via JavaScript
+        // Prepare Form Data
+        const formData = {
+            password: password.value.trim()
+        };
+
+        console.log('Form submitted successfully!');
+
+        fetch('/resetPassword/resetPasswordConfirm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Sending JSON data
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text(); // Read the response body as text
+            } else {
+                throw new Error('Failed to authenticate. Please try again.');
+            }
+        })
+        .then(data => {
+            console.log('Response from server:', data);
+            if (data === "done") {
+                alert('Login Successful!');
+                window.location.href = '/resetSuccess'; // Redirect to landing page
+            }
+            else{
+                alert('Failed to reset password. Please try again.');
+            }
+        })
+        
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while logging in. Please try again.');
+        });
+     }
+});
+
+
 

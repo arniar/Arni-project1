@@ -195,7 +195,30 @@ body {
   .iValid {
     color: red !important;
   }
+   /* Password Wrapper */
+   .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
   
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 35px; /* Add space on the right side to accommodate the eye icon */
+  }
+  
+  .password-wrapper i {
+    position: absolute;
+    right: 10px; /* Adjust the position of the eye icon inside the input field */
+    top: 20px;
+    transform: translateY(-50%); /* Vertically center the icon */
+    cursor: pointer;
+    color: #aaa;
+  }
+  
+  .password-wrapper i:hover {
+    color: #D7A54E; /* Change color on hover */
+  }
   
   /* Responsive Design */
   @media (max-width: 768px) {

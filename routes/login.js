@@ -5,30 +5,59 @@ const User = require('../models/user');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('login');
+    let detail ={
+        emailOrPhone:req.session.value, 
+    }
+    let error = req.session.error || null; // Retrieve error message from session, if any
+    req.session.error = null; // Clear error after use
+    let emailError = req.session.emailError || null; // Retrieve error message from session, if any
+    req.session.emailError = null; // Clear error after use
+    
+  res.render('login',{detail,error,emailError});
 });
 
 router.post('/loginAuth', async function(req, res) {
     req.session.value = req.body.emailOrPhone;
     req.session.password = req.body.password;
-    const user = await User.findOne({ email: req.session.value });
-        if (!user) {
-        return res.redirect('/already.js');
+    console.log(req.body);
+
+    try {
+        let user;
+
+        if (isNaN(req.session.value)) {
+            user = await User.findOne({ email: req.session.value });
+        } else {
+            user = await User.findOne({ phone: req.session.value });
         }
-    const isMatch = await user.comparePassword(req.session.password)
-    if(isMatch){
-        return res.redirect('/landing');
-    }
-    else{
-        const user = await User.findOne({ phone: req.session.value });
+
         if (!user) {
-        return res.redirect('/already.js');
+            console.log("user not found")
+            req.session.emailError = "User not found";
+            return res.send("new")
         }
-    const isMatch = await user.comparePassword(req.session.password)
-    if(isMatch){
-        return res.redirect('/landing');
+
+        const isMatch = await user.comparePassword(req.session.password);
+        console.log("Password Match:", isMatch);
+
+        if (isMatch) {
+            console.log("Authentication Successful!");
+            delete req.session.username;
+            delete req.session.phone;
+            delete req.session.email;
+            delete req.session.password;
+            delete req.session.value;
+            return res.send("done");
+
+        } else {
+            req.session.error = "Invalid credentials";
+            return res.send("undone");
+        }
+    } catch (err) {
+        console.error("Error during login:", err);
+        req.session.error = err.message || "Internal Server Error";
+        return;
     }
-    }
-})
+});
+
 
 module.exports = router;

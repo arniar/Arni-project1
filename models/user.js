@@ -71,7 +71,7 @@ userSchema.methods.comparePassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password); // Compare provided password with hashed password
   } catch (error) {
-    throw new Error('Error comparing password');
+    throw new Error('Password DOES NOT match');
   }
 };
 

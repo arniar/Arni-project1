@@ -19,6 +19,9 @@ var loginRouter = require('./routes/login');
 var forgetPasswordRouter = require('./routes/forgetPassword');
 var forgetPasswordOtpRouter = require('./routes/forgetPasswordOtp');
 var resetPasswordRouter = require('./routes/resetPassword');
+var termsRouter = require('./routes/terms');
+var privacyRouter = require('./routes/privacy');
+var resetSuccessRouter = require('./routes/resetSuccess');
 
 var app = express();
 
@@ -59,11 +62,10 @@ passport.deserializeUser((user, done) => {
 });
 
 
-// Passport Google Strategy
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_IDSecret,
-  callbackURL: process.env.GOOGLE_CallBack_URL
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
   // Save user info to session or database
   return done(null, profile);
@@ -95,6 +97,9 @@ app.use('/login', loginRouter);
 app.use('/forgetPassword', forgetPasswordRouter);
 app.use('/forgetPasswordOtp', forgetPasswordOtpRouter);
 app.use('/resetPassword', resetPasswordRouter);
+app.use('/terms', termsRouter);
+app.use('/privacy', privacyRouter);
+app.use('/resetSuccess', resetSuccessRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

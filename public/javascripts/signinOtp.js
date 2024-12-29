@@ -135,6 +135,7 @@ function resend() {
   if (count >=5) {
     return;
   }
+  window.location.reload();
   fetch('/signinOtp/resendOtp', {
     method: 'POST'
   })

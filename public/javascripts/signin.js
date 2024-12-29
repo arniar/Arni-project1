@@ -165,7 +165,13 @@ function validateConfirmPassword() {
     } else if (!passwordValue.startsWith(confirmPasswordValue)) {
         setError(passwordConfirm, 'Passwords do not match');
         passwordConfirmError = true;
-    } else {
+    } 
+    else if(passwordValue.length == confirmPasswordValue.length){
+        if(passwordValue !== confirmPasswordValue){
+            setError(passwordConfirm, 'Passwords do not match');
+            passwordConfirmError = true;
+        }
+    }else {
         clearError(passwordConfirm);
         passwordConfirmError = false;
     }
@@ -199,15 +205,42 @@ const form = document.getElementById('form');
 
 form.addEventListener('submit', (e) => {
     validateFullName();
-    validateEmail();
+    validateEmailOrPhone();
     validatePassword();
     validateConfirmPassword();
 
-    if (fullNameError || emailError || passwordError || passwordConfirmError) {
-        e.preventDefault(); // Prevent form submission if errors exist
+    if (fullNameError || emailOrPhoneError || passwordError || passwordConfirmError) {
+        e.preventDefault();
         alert('Please fix validation errors before submitting.');
+    } else {
+        e.preventDefault();
+
+        const formData = {
+            emailOrPhone: emailOrPhone.value.trim(),
+            password: password.value.trim(),
+            name: fullName.value.trim()
+        };
+
+        console.log('Form submitted successfully!');
+
+        fetch('/signin/signinAuth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.ok ? response.text() : Promise.reject('Failed to authenticate.'))
+        .then(data => {
+            if (data === "done") {
+                window.location.href = '/signinOtp';
+            } else if(data === "already") {
+                window.location.href = '/already';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while logging in. Please try again.');
+        });
     }
 });
-
-
-

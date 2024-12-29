@@ -48,10 +48,11 @@ router.post('/verify-otp', async function (req, res) {
         return res.redirect('/signinOtp');
       }
 
-      delete req.session.name; // Fixed typo
+      delete req.session.username;
       delete req.session.phone;
       delete req.session.email;
       delete req.session.password;
+      delete req.session.value;
 
       return res.redirect('/landing'); // Redirect to a success page
     } else {

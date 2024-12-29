@@ -37,104 +37,104 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-// // Timer for Resend OTP
-// let countdown = 60; // Timer duration in seconds
-// const resendBtn = document.getElementById('resendBtn');
-// const timerDisplay = document.getElementById('timer');
+// Timer for Resend OTP
+let countdown = 60; // Timer duration in seconds
+const resendBtn = document.getElementById('resendBtn');
+const timerDisplay = document.getElementById('timer');
 
-// // Initialize localStorage values if not already set
-// if (!localStorage.getItem('count')) localStorage.setItem('count', 0);
-// if (!localStorage.getItem('expiryTime')) localStorage.setItem('expiryTime', 0);
+// Initialize localStorage values if not already set
+if (!localStorage.getItem('count3')) localStorage.setItem('count', 0);
+if (!localStorage.getItem('expiryTime1')) localStorage.setItem('expiryTime', 0);
 
-// // Function to start the timer
-// function startTimer() {
-//   const count = parseInt(localStorage.getItem('count'), 10);
+// Function to start the timer
+function startTimer() {
+  const count = parseInt(localStorage.getItem('count3'), 10);
 
-//   // Check if user hit resend limit
-//   if (count >= 5) {
-//     const currentTime = new Date().getTime();
-//     const expiryTime = parseInt(localStorage.getItem('expiryTime'), 10);
+  // Check if user hit resend limit
+  if (count >= 5) {
+    const currentTime = new Date().getTime();
+    const expiryTime = parseInt(localStorage.getItem('expiryTime1'), 10);
 
-//     if (currentTime < expiryTime) {
-//       const remainingTime = Math.ceil((expiryTime - currentTime) / 1000);
-//       timerDisplay.textContent = `Try again after ${Math.floor(remainingTime / 60)} minutes`;
-//       resendBtn.style.pointerEvents = 'none';
-//       resendBtn.style.color = '#C4AA7B';
-//       return;
-//     } else {
-//       // Reset count if expiry time has passed
-//       localStorage.setItem('count', 0);
-//       localStorage.removeItem('expiryTime');
-//     }
-//   }
+    if (currentTime < expiryTime) {
+      const remainingTime = Math.ceil((expiryTime - currentTime) / 1000);
+      timerDisplay.textContent = `Try again after ${Math.floor(remainingTime / 60)} minutes`;
+      resendBtn.style.pointerEvents = 'none';
+      resendBtn.style.color = '#C4AA7B';
+      return;
+    } else {
+      // Reset count if expiry time has passed
+      localStorage.setItem('count3', 0);
+      localStorage.removeItem('expiryTime1');
+    }
+  }
 
-//   // Start the countdown
-//   resendBtn.style.pointerEvents = 'none'; // Disable button
-//   resendBtn.style.color = '#C4AA7B'; // Muted color for disabled state
+  // Start the countdown
+  resendBtn.style.pointerEvents = 'none'; // Disable button
+  resendBtn.style.color = '#C4AA7B'; // Muted color for disabled state
 
-//   const timerInterval = setInterval(() => {
-//     timerDisplay.textContent = `Resend available in ${countdown}s`;
-//     countdown--;
+  const timerInterval = setInterval(() => {
+    timerDisplay.textContent = `Resend available in ${countdown}s`;
+    countdown--;
 
-//     if (countdown < 0) {
-//       clearInterval(timerInterval);
-//       resendBtn.style.pointerEvents = 'auto'; // Enable button
-//       resendBtn.style.color = '#EBCB92'; // Active state color
-//       timerDisplay.textContent = 'You can now resend the OTP!';
-//     }
-//   }, 1000);
-// }
+    if (countdown < 0) {
+      clearInterval(timerInterval);
+      resendBtn.style.pointerEvents = 'auto'; // Enable button
+      resendBtn.style.color = '#EBCB92'; // Active state color
+      timerDisplay.textContent = 'You can now resend the OTP!';
+    }
+  }, 1000);
+}
 
-// // Function to set expiry timestamp for 12 hours
-// function setExpiryTime() {
-//   const currentTime = new Date().getTime();
-//   const expiryTime = currentTime + 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-//   localStorage.setItem('expiryTime', expiryTime);
-// }
+// Function to set expiry timestamp for 12 hours
+function setExpiryTime() {
+  const currentTime = new Date().getTime();
+  const expiryTime = currentTime + 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+  localStorage.setItem('expiryTime1', expiryTime);
+}
 
-// // Event Listener for Resend Button
-// resendBtn.addEventListener('click', () => {
-//   let count = parseInt(localStorage.getItem('count'), 10);
+// Event Listener for Resend Button
+resendBtn.addEventListener('click', () => {
+  let count = parseInt(localStorage.getItem('count3'), 10);
 
-//   if (count >=5) {
-//     alert('You have reached the maximum resend attempts. Try again after 12 hours.');
-//     return;
-//   }
+  if (count >=5) {
+    alert('You have reached the maximum resend attempts. Try again after 12 hours.');
+    return;
+  }
 
-//   alert('OTP has been resent!');
-//   count++;
-//   localStorage.setItem('count', count);
+  alert('OTP has been resent!');
+  count++;
+  localStorage.setItem('count3', count);
 
-//   if (count === 5) {
-//     setExpiryTime();
-//     alert('You have reached the maximum attempts. Please wait 12 hours.');
-//   }
+  if (count === 5) {
+    setExpiryTime();
+    alert('You have reached the maximum attempts. Please wait 12 hours.');
+  }
 
-//   countdown = 60; // Reset countdown
-//   startTimer(); // Restart the timer
-// });
+  countdown = 60; // Reset countdown
+  startTimer(); // Restart the timer
+});
 
-// // Function to reset resend count if expiry time has passed
-// function resetCountIfExpired() {
-//   const currentTime = new Date().getTime();
-//   const expiryTime = parseInt(localStorage.getItem('expiryTime'), 10);
+// Function to reset resend count if expiry time has passed
+function resetCountIfExpired() {
+  const currentTime = new Date().getTime();
+  const expiryTime = parseInt(localStorage.getItem('expiryTime1'), 10);
 
-//   if (expiryTime && currentTime > expiryTime) {
-//     localStorage.setItem('count', 0); // Reset count
-//     localStorage.removeItem('expiryTime'); // Remove expiry time
-//   }
-// }
+  if (expiryTime && currentTime > expiryTime) {
+    localStorage.setItem('count3', 0); // Reset count
+    localStorage.removeItem('expiryTime1'); // Remove expiry time
+  }
+}
 
-// // Initialize on page load
-// resetCountIfExpired();
-// startTimer();
+// Initialize on page load
+resetCountIfExpired();
+startTimer();
 
 
 function resend() {
-  // let count = parseInt(localStorage.getItem('count'), 10);
-  // if (count >=5) {
-  //   return;
-  // }
+  let count = parseInt(localStorage.getItem('count'), 10);
+  if (count >=5) {
+    return;
+  }
   fetch('/forgetPasswordOtp/resendOtp', {
     method: 'POST'
   })

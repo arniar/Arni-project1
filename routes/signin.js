@@ -33,16 +33,15 @@ router.post('/signinAuth', async (req, res) => {
     const user = await User.findOne({ email: req.session.email });
     console.log(user)
     if (user) {
-      req.session.error = 'User already exists. Please sign in.';
-      return res.redirect('/Already');
+      return res.send("already") ;
     }
      req.session.otp = await generateRandomOTP();
-     await emailOtp(req.session.otp, req.session.value);  // Send OTP to email or phone number
+      emailOtp(req.session.otp, req.session.value);  // Send OTP to email or phone number
      setTimeout(() =>{
         delete req.session.otp;
         delete req.session.enteredOtp;
      },1000*60*60*10)
-     res.redirect('/signinOtp');
+     res.send('done');
 });
 
 
@@ -78,7 +77,7 @@ router.get('/auth/google/callback',
             return res.redirect('/signinOtp');
           }
     
-          delete req.session.name; // Fixed typo
+          delete req.session.username; // Fixed typo
           delete req.session.phone;
           delete req.session.email;
 
